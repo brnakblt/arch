@@ -1,0 +1,55 @@
+// Niri Configuration
+
+input {
+    keyboard {
+        xkb {
+            layout "us"
+        }
+    }
+    touchpad {
+        tap
+        dwt
+    }
+}
+
+output "eDP-1" {
+    mode "1920x1080"
+    scale 1.0
+    position x=0 y=0
+}
+
+layout {
+    gaps 16
+    center-focused-column "never"
+    
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        width 4
+        active-color "#7fc8ff"
+        inactive-color "#505050"
+    }
+}
+
+spawn-at-startup "waybar"
+spawn-at-startup "swww" "init"
+
+binds {
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    Mod+Q { spawn "me-terminal"; }
+    Mod+D { spawn "rofi" "-show" "drun"; }
+    Mod+Shift+E { quit; }
+    Mod+C { close-window; }
+
+    Mod+Left  { focus-column-left; }
+    Mod+Down  { focus-window-down; }
+    Mod+Up    { focus-window-up; }
+    Mod+Right { focus-column-right; }
+}

@@ -1,0 +1,3 @@
+swww
+wlogout
+aylurs-gtk-shell
