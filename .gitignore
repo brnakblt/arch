@@ -1,0 +1,18 @@
+# ISO Images
+*.iso
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor and IDE folders
+.vscode/
+.idea/
+*.swp
+*~
+.gemini/
