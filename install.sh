@@ -14,6 +14,7 @@ source "$SCRIPT_DIR/scripts/terminal_selector.sh"
 source "$SCRIPT_DIR/scripts/browser_selector.sh"
 source "$SCRIPT_DIR/scripts/editor_selector.sh"
 source "$SCRIPT_DIR/scripts/file_manager_selector.sh"
+source "$SCRIPT_DIR/scripts/audio_bluetooth_selector.sh"
 source "$SCRIPT_DIR/scripts/music_selector.sh"
 source "$SCRIPT_DIR/scripts/tool_selector.sh"
 source "$SCRIPT_DIR/scripts/social_gaming_selector.sh"
@@ -23,9 +24,11 @@ source "$SCRIPT_DIR/scripts/office_selector.sh"
 source "$SCRIPT_DIR/scripts/communication_selector.sh"
 source "$SCRIPT_DIR/scripts/utils_selector.sh"
 source "$SCRIPT_DIR/scripts/theme_selector.sh"
+source "$SCRIPT_DIR/scripts/asus_selector.sh"
+source "$SCRIPT_DIR/scripts/desktop_env_selector.sh"
 
 echo "=========================================="
-echo "   Arch Linux Hyprland/Niri Installer     "
+echo "   Arch Linux Desktop/WM Installer        "
 echo "=========================================="
 
 # Check if running on Arch Linux
@@ -62,52 +65,60 @@ AUR_PACKAGES=$(grep -v '^#' "$SCRIPT_DIR/packages/aur.txt" | tr '\n' ' ')
 echo "Targets: $AUR_PACKAGES"
 yay -S --needed --noconfirm $AUR_PACKAGES
 
-# 6. Setup Terminal
+# 6. Setup Desktop Environment
+setup_desktop_env
+
+# 7. Setup Terminal
 setup_terminal
 
-# 7. Setup Browsers
+# 8. Setup Browsers
 setup_browsers
 
-# 8. Setup Editors
+# 9. Setup Editors
 setup_editors
 
-# 9. Setup File Managers
+# 10. Setup File Managers
 setup_file_managers
 
-# 10. Setup Music Platforms
+# 11. Setup Audio & Bluetooth
+setup_audio_bluetooth
+
+# 12. Setup Music Platforms
 setup_music_platforms
 
-# 11. Setup Multimedia Tools
+# 13. Setup Multimedia Tools
 setup_multimedia_tools
 
-# 12. Setup Social & Gaming
+# 14. Setup Social & Gaming
 setup_social_gaming
 
-# 13. Setup Developer Tools
+# 15. Setup Developer Tools
 setup_dev_tools
 
-# 14. Setup Shell & Prompt
+# 16. Setup Shell & Prompt
 setup_shell
 
-# 15. Setup Office & Productivity
+# 17. Setup Office & Productivity
 setup_office
 
-# 16. Setup Communication
+# 18. Setup Communication
 setup_communication
 
-# 17. Setup Utilities
+# 19. Setup Utilities
 setup_utils
 
-# 18. Setup Themes
+# 20. Setup Themes
 setup_themes
 
-# 19. Setup Dotfiles
+# 21. Setup ASUS ROG/TUF Tools
+setup_asus
+
+# 22. Setup Dotfiles
 setup_dotfiles
 
-# 20. Enable Services
+# 23. Enable Services
 echo ":: Enabling services..."
 sudo systemctl enable --now NetworkManager
-sudo systemctl enable --now bluetooth
 sudo systemctl enable sddm
 
 echo "=========================================="
