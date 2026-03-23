@@ -7,5 +7,5 @@ linux-headers
 ttf-jetbrains-mono-nerd
 noto-fonts
 noto-fonts-emoji
-neofetch
+fastfetch
 btop

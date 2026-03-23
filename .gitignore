@@ -1,18 +1,4 @@
-# ISO Images
-*.iso
-
-# Logs and temporary files
+*.qcow2
+*.img
 *.log
-*.tmp
-*.bak
-
-# OS generated files
-.DS_Store
-Thumbs.db
-
-# Editor and IDE folders
-.vscode/
-.idea/
-*.swp
-*~
-.gemini/
+*.iso
