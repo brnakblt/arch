@@ -1,5 +1,12 @@
 // Niri Configuration
 
+// TROUBLESHOOTING: If you get a black screen on NVIDIA/Hybrid/ARM:
+// 1. Run 'ls /dev/dri/' to find your render node (usually renderD128 or renderD129)
+// 2. Uncomment the block below and set the correct path.
+// debug {
+//     render-drm-device "/dev/dri/renderD128"
+// }
+
 input {
     keyboard {
         xkb {

@@ -15,6 +15,7 @@ setup_dev_tools() {
         echo "9) Python + pip (Versatile scripting language & package installer)"
         echo "10) GCC / Clang (Essential C/C++ compiler collections)"
         echo "11) QEMU / Virt-manager (Virtual Machine & Emulation suite)"
+        echo "12) .NET Ecosystem (C#, F#, VB.NET runtimes & SDKs)"
 
         read -p ":: Choose dev tools to install: " -a dev_choices
 
@@ -23,6 +24,7 @@ setup_dev_tools() {
         SETUP_RUST=false
         SETUP_VIRT=false
         SETUP_NODE=false
+        SETUP_DOTNET=false
         SELECTED_NAMES=""
 
         for choice in "${dev_choices[@]}"; do
@@ -50,9 +52,25 @@ setup_dev_tools() {
                     SETUP_VIRT=true
                     SELECTED_NAMES="$SELECTED_NAMES QEMU/Virt"
                     ;;
+                12) SETUP_DOTNET=true; SELECTED_NAMES="$SELECTED_NAMES .NET" ;;
                 *) echo ":: Invalid choice '$choice' ignored." ;;
             esac
         done
+
+        if [ "$SETUP_DOTNET" = true ]; then
+            echo ":: .NET Ecosystem Selection"
+            echo "   1) .NET Latest (Current)"
+            echo "   2) .NET 9.0 (STS)"
+            echo "   3) .NET 8.0 (LTS)"
+            read -p ":: Choose .NET version [1-3]: " dotnet_ver_choice
+            
+            echo "   Select components (space separated):"
+            echo "   1) SDK (Required for building apps)"
+            echo "   2) Runtime (Only for running apps)"
+            echo "   3) ASP.NET Core (Web development)"
+            echo "   4) PowerShell Core (Global tool)"
+            read -p ":: Choose .NET components: " -a dotnet_comp_choices
+        fi
 
         if [ "$SETUP_NODE" = true ]; then
             echo ":: Node.js Ecosystem Selection"
@@ -121,6 +139,51 @@ setup_dev_tools() {
                  fi
                  echo ":: Installing Node tools: $NODE_PKGS"
                  yay -S --needed --noconfirm $NODE_PKGS
+            fi
+        fi
+
+        if [ "$SETUP_DOTNET" = true ]; then
+            DOTNET_PKGS=""
+            SUFFIX=""
+            case $dotnet_ver_choice in
+                2) SUFFIX="-9.0" ;;
+                3) SUFFIX="-8.0" ;;
+            esac
+
+            for dc in "${dotnet_comp_choices[@]}"; do
+                case $dc in
+                    1) DOTNET_PKGS="$DOTNET_PKGS dotnet-sdk$SUFFIX" ;;
+                    2) DOTNET_PKGS="$DOTNET_PKGS dotnet-runtime$SUFFIX" ;;
+                    3) 
+                        DOTNET_PKGS="$DOTNET_PKGS aspnet-runtime$SUFFIX aspnet-targeting-pack$SUFFIX" 
+                        ;;
+                    4) INSTALL_PWSH=true ;;
+                esac
+            done
+
+            if [ -n "$DOTNET_PKGS" ]; then
+                echo ":: Installing .NET packages: $DOTNET_PKGS"
+                # If versioned, prefer -bin from AUR for consistency
+                if [ -n "$SUFFIX" ]; then
+                    VER_PKGS=""
+                    for p in $DOTNET_PKGS; do VER_PKGS="$VER_PKGS $p-bin"; done
+                    yay -S --needed --noconfirm $VER_PKGS
+                else
+                    sudo pacman -S --needed --noconfirm $DOTNET_PKGS
+                fi
+            fi
+
+            if [ "$INSTALL_PWSH" = true ]; then
+                echo ":: Installing PowerShell Core via dotnet tool..."
+                dotnet tool install --global PowerShell
+            fi
+
+            echo ":: Configuring .NET Environment (PATH & Telemetry)..."
+            if ! grep -q "DOTNET_CLI_TELEMETRY_OPTOUT" ~/.bashrc; then
+                echo 'export DOTNET_CLI_TELEMETRY_OPTOUT=1' >> ~/.bashrc
+            fi
+            if ! grep -q ".dotnet/tools" ~/.bashrc; then
+                echo 'export PATH="$PATH:$HOME/.dotnet/tools"' >> ~/.bashrc
             fi
         fi
 

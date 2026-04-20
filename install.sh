@@ -89,6 +89,17 @@ echo "Targets: $AUR_PACKAGES"
 yay -S --needed --noconfirm $AUR_PACKAGES
 wait_for_keypress
 
+# 5.1 Flatpak Setup (Optional)
+print_header "Flatpak Setup"
+read -p ":: Do you want to install Flatpak support? [y/N] " flatpak_choice
+if [[ "$flatpak_choice" =~ ^[Yy]$ ]]; then
+    echo ":: Installing Flatpak..."
+    sudo pacman -S --needed --noconfirm flatpak
+else
+    echo ":: Skipping Flatpak installation."
+fi
+wait_for_keypress
+
 # 6. Setup Desktop Environment
 setup_desktop_env
 wait_for_keypress

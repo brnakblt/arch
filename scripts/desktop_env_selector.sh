@@ -76,6 +76,11 @@ setup_desktop_env() {
         if [ -n "$DE_PKGS" ]; then
             echo ":: Installing Desktop Environment packages: $DE_PKGS"
             sudo pacman -S --needed --noconfirm $DE_PKGS
+            
+            # Post-install fixes
+            if [[ "$SELECTED_NAMES" == *"Niri"* ]]; then
+                apply_niri_nvidia_fix
+            fi
         fi
 
         if [ -n "$AUR_DE_PKGS" ]; then
